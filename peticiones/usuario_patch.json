@@ -1,0 +1,6 @@
+{
+  "usuario_id": 1,
+  "ubicacion": "Tunja, Boyacá",
+  "hectareas": 12,
+  "rotacion": ["papa", "maiz", "frijol"]
+}
