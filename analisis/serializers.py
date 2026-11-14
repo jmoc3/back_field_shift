@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
 class AnalisisPeticionSerializer(serializers.Serializer):
-    lat = serializers.FloatField()
-    lon = serializers.FloatField()
+    lat = serializers.FloatField(min_value=-90, max_value=90)
+    lon = serializers.FloatField(min_value=-180, max_value=180)
     rotacion = serializers.ListField(
         child=serializers.CharField(),
         allow_empty=False
