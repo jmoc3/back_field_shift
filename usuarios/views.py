@@ -52,3 +52,39 @@ class LoginView(APIView):
                 {"error": "El correo no está registrado"},
                 status=status.HTTP_404_NOT_FOUND,
             )
+
+
+class UsuarioView(APIView):
+    def get(self, request):
+        id_usuario = request.query_params.get("id_usuario")
+
+        if not id_usuario:
+            return Response(
+                {"error": "Debes enviar el parámetro id_usuario."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            usuario = Usuario.objects.get(pk=id_usuario)
+        except (Usuario.DoesNotExist, ValueError):
+            return Response(
+                {"error": "Usuario no encontrado."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        rotaciones_activas = list(
+            usuario.rotaciones
+            .filter(activa=True)
+            .values("id", "rotacion", "activa")
+        )
+
+        return Response(
+            {
+                "id": usuario.id,
+                "nombre": usuario.nombre,
+                "correo": usuario.correo,
+                "ubicacion": usuario.ubicacion,
+                "hectareas": usuario.hectareas,
+                "rotaciones": rotaciones_activas,
+            }
+        )
