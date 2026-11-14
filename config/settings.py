@@ -7,7 +7,11 @@ SECRET_KEY = "django-insecure-cambiar-esta-clave"
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".up.railway.app", "localhost", "127.0.0.1"]
+
+# Front en local (cualquier puerto). Cuando exista el dominio del front, agregarlo a CORS_ALLOWED_ORIGINS.
+CORS_ALLOWED_ORIGIN_REGEXES = [r"^http://localhost:\d+$", r"^http://127\.0\.0\.1:\d+$"]
+CORS_ALLOWED_ORIGINS = []
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -17,6 +21,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "corsheaders",
     'usuarios',
     'rotaciones',
     'analisis',
@@ -24,6 +29,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
