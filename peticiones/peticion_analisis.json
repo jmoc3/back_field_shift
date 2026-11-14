@@ -1,0 +1,6 @@
+{
+  "lat": 4.60,
+  "lon": -74.08,
+  "rotacion": ["maiz", "maiz", "papa"],
+  "prioridades": ["agua", "suelo", "economia", "equipos"]
+}
