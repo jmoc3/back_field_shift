@@ -5,7 +5,7 @@ ETIQUETAS = {"agua": "agua", "suelo": "salud del suelo", "economia": "costo", "e
 
 
 def _lista(nombres):
-    nombres = list(nombres)
+    nombres = list(dict.fromkeys(nombres))  # sin repetidos, conservando el orden
     return nombres[0] if len(nombres) == 1 else ", ".join(nombres[:-1]) + " y " + nombres[-1]
 
 

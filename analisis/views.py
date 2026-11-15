@@ -6,7 +6,8 @@ from rest_framework.views import APIView
 from rotaciones.models import Rotacion
 from usuarios.models import Usuario
 from .rotacion import analizar
-from .serializers import AnalisisPeticionSerializer
+from .actividad import armar_actividad
+from .serializers import ActividadPeticionSerializer, AnalisisPeticionSerializer
 
 
 class AnalisisView(APIView):
@@ -52,3 +53,20 @@ class AnalisisView(APIView):
                 )
 
         return Response(respuesta, status=status.HTTP_200_OK)
+
+class ActividadView(APIView):
+    def get(self, request):
+        serializer = ActividadPeticionSerializer(data=request.query_params)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        datos = serializer.validated_data
+        try:
+            usuario = Usuario.objects.get(id=datos["usuario_id"])
+        except Usuario.DoesNotExist:
+            return Response(
+                {"usuario_id": "No existe un usuario con ese ID."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        return Response(armar_actividad(usuario, datos["lat"], datos["lon"]), status=status.HTTP_200_OK)

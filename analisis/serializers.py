@@ -3,8 +3,8 @@ from rest_framework import serializers
 
 class AnalisisPeticionSerializer(serializers.Serializer):
     usuario_id = serializers.IntegerField(required=True)
-    lat = serializers.FloatField()
-    lon = serializers.FloatField()
+    lat = serializers.FloatField(min_value=-90, max_value=90)
+    lon = serializers.FloatField(min_value=-180, max_value=180)
     rotacion = serializers.ListField(
         child=serializers.CharField(),
         allow_empty=False,
@@ -27,3 +27,8 @@ class AnalisisPeticionSerializer(serializers.Serializer):
             raise serializers.ValidationError({"lon": "Debe ser un valor numérico."})
 
         return data
+
+class ActividadPeticionSerializer(serializers.Serializer):
+    usuario_id = serializers.IntegerField()
+    lat = serializers.FloatField(min_value=-90, max_value=90)
+    lon = serializers.FloatField(min_value=-180, max_value=180)
