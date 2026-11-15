@@ -93,7 +93,38 @@ def puntaje(subs, pesos_):
 
 # ---------- Análisis completo ----------
 
-def _opcion(id_, secuencia, clima, pesos_, aptitudes, es_actual, reglas):
+def etiquetas_clima(clima):
+    """Categorías legibles para las tarjetas del front."""
+    h, lluvia, t = clima["humedad_suelo"], clima["lluvia_anual_mm"], clima["temp_media_c"]
+    humedad = "baja" if h < 0.3 else "alta" if h > 0.7 else "media"
+    hidrico = "seco" if lluvia < 600 else "húmedo" if lluvia > 1500 else "moderado"
+    termico = "frío" if t < 12 else "cálido" if t > 22 else "templado"
+    return {"humedad_nivel": humedad, "clima_tipo": f"{hidrico}/{termico}"}
+
+
+def _demanda_agua(secuencia):
+    """Lluvia anual que piden los cultivos según EcoCrop (promedio de ROPMN, o RMIN si falta)."""
+    valores = [c["ropmn"] or c["rmin"] for c in secuencia if c["ropmn"] or c["rmin"]]
+    return mean(valores) if valores else None
+
+
+def aporte(secuencia, actual, clima):
+    """Comparación contra la rotación actual (referencia)."""
+    demanda, demanda_ref = _demanda_agua(secuencia), _demanda_agua(actual)
+    agua = round(100 * demanda / demanda_ref) if demanda and demanda_ref else None
+    suelo = subpuntajes(secuencia, clima)["suelo"]
+    suelo_ref = subpuntajes(actual, clima)["suelo"]
+    return {
+        "agua": {"referencia": 100, "rotacion": agua, "cambio_pct": None if agua is None else agua - 100},
+        "suelo": {
+            "referencia": round(suelo_ref, 2),
+            "rotacion": round(suelo, 2),
+            "nivel": "mayor" if suelo > suelo_ref else "menor" if suelo < suelo_ref else "igual",
+        },
+    }
+
+
+def _opcion(id_, secuencia, clima, pesos_, aptitudes, es_actual, reglas, actual):
     subs = subpuntajes(secuencia, clima)
     contexto = {
         "secuencia": secuencia,
@@ -111,6 +142,7 @@ def _opcion(id_, secuencia, clima, pesos_, aptitudes, es_actual, reglas):
         "cultivos": [c["id"] for c in secuencia],
         "puntaje": round(puntaje(subs, pesos_), 2),
         **textos.armar(contexto),
+        "aporte": aporte(secuencia, actual, clima),
     }
 
 
@@ -162,13 +194,13 @@ def analizar(lat, lon, rotacion, prioridades, clima=None, catalogo=None):
         if len(elegidas) == 2:
             break
 
-    opciones = [_opcion("actual", actual, clima, pesos_, aptitudes, True, infracciones(actual))]
+    opciones = [_opcion("actual", actual, clima, pesos_, aptitudes, True, infracciones(actual), actual)]
     for i, s in enumerate(elegidas, start=1):
-        opciones.append(_opcion(f"opcion_{i}", list(s), clima, pesos_, aptitudes, False, []))
+        opciones.append(_opcion(f"opcion_{i}", list(s), clima, pesos_, aptitudes, False, [], actual))
 
     return {
         "version": "1.0",
-        "clima": {k: clima[k] for k in CLAVES_CLIMA},
+        "clima": {**{k: clima[k] for k in CLAVES_CLIMA}, **etiquetas_clima(clima)},
         "opciones": opciones,
         "aviso": AVISO,
     }
