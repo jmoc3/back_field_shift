@@ -12,7 +12,20 @@ NIVEL_INVERSO = {"bajo": 1.0, "baja": 1.0, "medio": 0.5, "media": 0.5, "alto": 0
 NIVEL_DIRECTO = {"bajo": 0.0, "medio": 0.5, "alto": 1.0}
 NEUTRO = 0.5  # cuando el dato no existe
 CLAVES_CLIMA = ["lluvia_anual_mm", "temp_media_c", "dias_calor", "riesgo_helada", "humedad_suelo", "fuente"]
-AVISO = "Herramienta de apoyo: revisa estas opciones con un agrónomo local."
+AVISO = {
+    "es": "Herramienta de apoyo: revisa estas opciones con un agrónomo local.",
+    "en": "Support tool: review these options with a local agronomist.",
+}
+ETIQUETAS_CLIMA = {
+    "es": {"baja": "baja", "media": "media", "alta": "alta", "seco": "seco", "moderado": "moderado",
+           "húmedo": "húmedo", "frío": "frío", "templado": "templado", "cálido": "cálido"},
+    "en": {"baja": "low", "media": "medium", "alta": "high", "seco": "dry", "moderado": "moderate",
+           "húmedo": "humid", "frío": "cold", "templado": "temperate", "cálido": "warm"},
+}
+
+
+def nombre_cultivo(c, idioma="es"):
+    return c.get("nombre_en", c["nombre"]) if idioma == "en" else c["nombre"]
 
 
 # ---------- Aptitud climática ----------
@@ -100,13 +113,14 @@ def puntaje(subs, pesos_):
 
 # ---------- Análisis completo ----------
 
-def etiquetas_clima(clima):
+def etiquetas_clima(clima, idioma="es"):
     """Categorías legibles para las tarjetas del front."""
     h, lluvia, t = clima["humedad_suelo"], clima["lluvia_anual_mm"], clima["temp_media_c"]
     humedad = "baja" if h < 0.3 else "alta" if h > 0.7 else "media"
     hidrico = "seco" if lluvia < 600 else "húmedo" if lluvia > 1500 else "moderado"
     termico = "frío" if t < 12 else "cálido" if t > 22 else "templado"
-    return {"humedad_nivel": humedad, "clima_tipo": f"{hidrico}/{termico}"}
+    e = ETIQUETAS_CLIMA[idioma]
+    return {"humedad_nivel": e[humedad], "clima_tipo": f"{e[hidrico]}/{e[termico]}"}
 
 
 def _demanda_agua(secuencia):
@@ -131,9 +145,10 @@ def aporte(secuencia, actual, clima):
     }
 
 
-def _opcion(id_, secuencia, clima, pesos_, aptitudes, es_actual, reglas, actual):
+def _opcion(id_, secuencia, clima, pesos_, aptitudes, es_actual, reglas, actual, idioma="es"):
     subs = subpuntajes(secuencia, clima)
     contexto = {
+        "idioma": idioma,
         "secuencia": secuencia,
         "clima": clima,
         "subpuntajes": subs,
@@ -145,7 +160,7 @@ def _opcion(id_, secuencia, clima, pesos_, aptitudes, es_actual, reglas, actual)
     return {
         "id": id_,
         "actual": es_actual,
-        "nombre": " → ".join(c["nombre"] for c in secuencia),
+        "nombre": " → ".join(nombre_cultivo(c, idioma) for c in secuencia),
         "cultivos": [c["id"] for c in secuencia],
         "puntaje": round(puntaje(subs, pesos_), 2),
         **textos.armar(contexto),
@@ -153,7 +168,7 @@ def _opcion(id_, secuencia, clima, pesos_, aptitudes, es_actual, reglas, actual)
     }
 
 
-def analizar(lat, lon, rotacion, prioridades, clima=None, catalogo=None):
+def analizar(lat, lon, rotacion, prioridades, clima=None, catalogo=None, idioma="es"):
     if clima is None:
         from data.nasa_power import obtener_clima
         clima = obtener_clima(lat, lon)
@@ -201,13 +216,13 @@ def analizar(lat, lon, rotacion, prioridades, clima=None, catalogo=None):
         if len(elegidas) == 2:
             break
 
-    opciones = [_opcion("actual", actual, clima, pesos_, aptitudes, True, infracciones(actual), actual)]
+    opciones = [_opcion("actual", actual, clima, pesos_, aptitudes, True, infracciones(actual), actual, idioma)]
     for i, s in enumerate(elegidas, start=1):
-        opciones.append(_opcion(f"opcion_{i}", list(s), clima, pesos_, aptitudes, False, [], actual))
+        opciones.append(_opcion(f"opcion_{i}", list(s), clima, pesos_, aptitudes, False, [], actual, idioma))
 
     return {
         "version": "1.0",
-        "clima": {**{k: clima[k] for k in CLAVES_CLIMA}, **etiquetas_clima(clima)},
+        "clima": {**{k: clima[k] for k in CLAVES_CLIMA}, **etiquetas_clima(clima, idioma)},
         "opciones": opciones,
-        "aviso": AVISO,
+        "aviso": AVISO[idioma],
     }

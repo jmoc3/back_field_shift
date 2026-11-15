@@ -7,6 +7,7 @@ from rotaciones.models import Rotacion
 from usuarios.models import Usuario
 from .rotacion import analizar
 from .actividad import armar_actividad
+from .idioma import idioma, nombre_rotacion
 from .serializers import ActividadPeticionSerializer, AnalisisPeticionSerializer
 
 
@@ -32,6 +33,7 @@ class AnalisisView(APIView):
                 datos["lon"],
                 datos["rotacion"],
                 datos["prioridades"],
+                idioma=idioma(request),
             )
         except ValueError as error:
             return Response({"rotacion": str(error)}, status=status.HTTP_400_BAD_REQUEST)
@@ -45,7 +47,8 @@ class AnalisisView(APIView):
             for opcion in respuesta["opciones"]:
                 Rotacion.objects.update_or_create(
                     usuario=usuario,
-                    rotacion=opcion["nombre"],
+                    # En la base el nombre va siempre en español, sin importar el idioma de la respuesta
+                    rotacion=nombre_rotacion(opcion["cultivos"]),
                     defaults={
                         "activa": True,
                         "data": opcion,
@@ -69,4 +72,5 @@ class ActividadView(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        return Response(armar_actividad(usuario, datos["lat"], datos["lon"]), status=status.HTTP_200_OK)
+        return Response(armar_actividad(usuario, datos["lat"], datos["lon"], idioma=idioma(request)),
+                        status=status.HTTP_200_OK)

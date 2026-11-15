@@ -57,6 +57,20 @@ CULTIVOS = [
     ("remolacha", "Remolacha", "Beta vulgaris"),
 ]
 
+# Nombre común en inglés (respuestas con Accept-Language: en)
+NOMBRES_EN = {
+    "maiz": "Maize", "trigo": "Wheat", "cebada": "Barley", "avena": "Oats", "arroz": "Rice",
+    "sorgo": "Sorghum", "mijo": "Pearl millet", "centeno": "Rye", "quinua": "Quinoa", "amaranto": "Amaranth",
+    "frijol": "Common bean", "arveja": "Pea", "haba": "Faba bean", "garbanzo": "Chickpea", "lenteja": "Lentil",
+    "soya": "Soybean", "mani": "Peanut", "caupi": "Cowpea", "guandul": "Pigeon pea", "alfalfa": "Alfalfa",
+    "trebol_rojo": "Red clover", "tarwi": "Tarwi (Andean lupin)", "frijol_mungo": "Mung bean",
+    "mucuna": "Velvet bean", "canavalia": "Jack bean", "papa": "Potato", "yuca": "Cassava",
+    "batata": "Sweet potato", "malanga": "Taro", "girasol": "Sunflower", "colza": "Rapeseed",
+    "algodon": "Cotton", "ajonjoli": "Sesame", "cartamo": "Safflower", "linaza": "Flax",
+    "trigo_sarraceno": "Buckwheat", "tomate": "Tomato", "cebolla": "Onion", "zanahoria": "Carrot",
+    "ahuyama": "Squash", "remolacha": "Beet",
+}
+
 LEGUMINOSAS = {"Leguminosae", "Fabaceae"}
 CEREALES = {"Gramineae", "Poaceae"}
 
@@ -88,6 +102,7 @@ def cargar_cultivos():
         catalogo.append({
             "id": id_,
             "nombre": nombre,
+            "nombre_en": NOMBRES_EN[id_],
             "nombre_cientifico": cientifico,
             "familia": familia,
             "topmn": _numero(f["TOPMN"]),

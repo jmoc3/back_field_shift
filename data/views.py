@@ -13,4 +13,8 @@ class CultivosView(APIView):
         with RUTA_CULTIVOS.open(encoding="utf-8") as archivo:
             cultivos = json.load(archivo)
 
+        # Con Accept-Language: en, "nombre" viene en inglés; el id no cambia
+        if request.headers.get("Accept-Language", "").strip().lower().startswith("en"):
+            cultivos = [{**c, "nombre": c.get("nombre_en", c["nombre"])} for c in cultivos]
+
         return Response(cultivos)
