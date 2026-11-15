@@ -1,13 +1,16 @@
 """Catálogo de cultivos de campo leído directamente de EcoCrop_DB.csv.
 
 Provisional hasta que exista cultivos.json: devuelve las mismas llaves que tendrá ese archivo.
-Los campos que EcoCrop no trae (aporte al suelo, costo, maquinaria) quedan en None.
+Los campos que EcoCrop no trae (aporte al suelo, costo) quedan en None; maquinaria y precio salen de insumos.json.
 """
 import csv
+import json
 from functools import lru_cache
 from pathlib import Path
 
 RUTA_CSV = Path(__file__).with_name("EcoCrop_DB.csv")
+# Maquinaria (FAO GAEZ) y precio de referencia (USDA NASS), generado por data/extraer_insumos.py
+RUTA_INSUMOS = Path(__file__).with_name("insumos.json")
 
 # id, nombre en español, nombre científico en EcoCrop
 CULTIVOS = [
@@ -65,15 +68,23 @@ def _numero(valor):
         return None
 
 
+def _insumos():
+    if not RUTA_INSUMOS.exists():
+        return {}
+    return json.loads(RUTA_INSUMOS.read_text(encoding="utf-8")).get("cultivos", {})
+
+
 @lru_cache(maxsize=1)
 def cargar_cultivos():
     with open(RUTA_CSV, encoding="latin-1", newline="") as archivo:
         filas = {f["ScientificName"].strip(): f for f in csv.DictReader(archivo)}
+    insumos = _insumos()
 
     catalogo = []
     for id_, nombre, cientifico in CULTIVOS:
         f = filas[cientifico]
         familia = f["FAMNAME"].split(":")[-1].strip()
+        extra = insumos.get(id_, {})
         catalogo.append({
             "id": id_,
             "nombre": nombre,
@@ -95,6 +106,9 @@ def cargar_cultivos():
             # No vienen en EcoCrop: se completan a mano en cultivos.json.
             "aporte_suelo": None,
             "costo": None,       # "bajo" | "medio" | "alto"
-            "maquinaria": None,  # "baja" | "media" | "alta"
+            # De insumos.json (None si la fuente no cubre el cultivo)
+            "maquinaria": extra.get("maquinaria"),        # "baja" | "media" | "alta" (FAO GAEZ)
+            "precio_usd_kg": extra.get("precio_usd_kg"),  # precio al productor en EE. UU. (USDA NASS)
+            "precio_nivel": extra.get("precio_nivel"),    # "bajo" | "medio" | "alto"
         })
     return catalogo

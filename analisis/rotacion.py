@@ -9,6 +9,7 @@ LARGO_ROTACION = 3
 PESOS_POR_ORDEN = [0.4, 0.3, 0.2, 0.1]
 PRIORIDADES = ["agua", "suelo", "economia", "equipos"]
 NIVEL_INVERSO = {"bajo": 1.0, "baja": 1.0, "medio": 0.5, "media": 0.5, "alto": 0.0, "alta": 0.0}
+NIVEL_DIRECTO = {"bajo": 0.0, "medio": 0.5, "alto": 1.0}
 NEUTRO = 0.5  # cuando el dato no existe
 CLAVES_CLIMA = ["lluvia_anual_mm", "temp_media_c", "dias_calor", "riesgo_helada", "humedad_suelo", "fuente"]
 AVISO = "Herramienta de apoyo: revisa estas opciones con un agrónomo local."
@@ -72,10 +73,16 @@ def subpuntajes(secuencia, clima):
             return 1.0
         return NEUTRO if c["aporte_suelo"] else 0.0
 
+    def economia(c):
+        # Precio de referencia al productor (USDA NASS, EE. UU.): más alto, mejor. Si no hay, el costo (inverso).
+        if c.get("precio_nivel"):
+            return NIVEL_DIRECTO[c["precio_nivel"]]
+        return NIVEL_INVERSO.get(c["costo"], NEUTRO)
+
     return {
         "agua": mean(agua(c) for c in secuencia),
         "suelo": mean(suelo(c) for c in secuencia),
-        "economia": mean(NIVEL_INVERSO.get(c["costo"], NEUTRO) for c in secuencia),
+        "economia": mean(economia(c) for c in secuencia),
         "equipos": mean(NIVEL_INVERSO.get(c["maquinaria"], NEUTRO) for c in secuencia),
     }
 

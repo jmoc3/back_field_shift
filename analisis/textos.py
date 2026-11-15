@@ -1,7 +1,7 @@
 """Textos de cada opción armados con plantillas a partir de los valores reales."""
 from statistics import mean
 
-ETIQUETAS = {"agua": "agua", "suelo": "salud del suelo", "economia": "costo", "equipos": "maquinaria"}
+ETIQUETAS = {"agua": "agua", "suelo": "salud del suelo", "economia": "precio de referencia", "equipos": "maquinaria"}
 
 
 def _lista(nombres):
@@ -147,8 +147,20 @@ def vacios(ctx):
         "No conocemos el análisis de suelo de tu finca (pH, textura, materia orgánica).",
         "NASA POWER usa celdas de unos 50 km: no capta la altitud exacta ni los microclimas de la finca.",
     ]
-    if any(c["costo"] is None or c["maquinaria"] is None for c in sec):
-        items.append("Costo y maquinaria no están en EcoCrop; se usó un valor neutro en economía y equipos.")
+    con_precio = [c for c in sec if c.get("precio_usd_kg") is not None]
+    if con_precio:
+        items.append("Los precios de economía son los que reciben los productores en Estados Unidos (USDA NASS, "
+                     "USD/kg), no precios de Colombia, y no incluyen costos de producción.")
+    sin_precio = [c["nombre"] for c in sec if c.get("precio_nivel") is None]
+    if sin_precio:
+        items.append(f"Sin precio de referencia para: {_lista(sin_precio)}; se usó un valor neutro en economía.")
+    if any(c["maquinaria"] is not None for c in sec):
+        items.append("La maquinaria se estima con FAO GAEZ (rendimiento con insumos altos y mecanización frente a "
+                     "trabajo manual); no es un inventario de equipos ni de su costo.")
+    sin_maquinaria = [c["nombre"] for c in sec if c["maquinaria"] is None]
+    if sin_maquinaria:
+        items.append(f"FAO GAEZ no tiene datos de maquinaria para: {_lista(sin_maquinaria)}; "
+                     f"se usó un valor neutro en equipos.")
     if any(c["aporte_suelo"] is None and not c["fija_nitrogeno"] for c in sec):
         items.append("El aporte al suelo de los cultivos no leguminosos aún no está documentado.")
     sin_helada = [c["nombre"] for c in sec if c["ktmp"] is None]

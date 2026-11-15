@@ -1,0 +1,307 @@
+{
+  "fuentes": {
+    "gaez": {
+      "nombre": "FAO GAEZ v4 (res05, yxHr/yxLr, secano, 1981-2010)",
+      "puntos": [
+        [
+          5.53,
+          -73.36
+        ],
+        [
+          4.86,
+          -74.05
+        ],
+        [
+          1.21,
+          -77.28
+        ],
+        [
+          6.15,
+          -75.37
+        ],
+        [
+          4.44,
+          -75.23
+        ],
+        [
+          8.75,
+          -75.88
+        ],
+        [
+          4.14,
+          -73.63
+        ],
+        [
+          6.99,
+          -73.05
+        ],
+        [
+          10.46,
+          -73.25
+        ],
+        [
+          3.54,
+          -76.3
+        ]
+      ],
+      "fecha": "2026-11-15"
+    },
+    "nass": {
+      "nombre": "USDA NASS QuickStats (PRICE RECEIVED, nacional, anual)",
+      "pais": "Estados Unidos",
+      "fecha": "2026-11-15"
+    }
+  },
+  "cultivos": {
+    "maiz": {
+      "gaez_codigo": "mze",
+      "razon_insumos": 3.68,
+      "puntos_validos": 7,
+      "maquinaria": "baja",
+      "nass_serie": "CORN, GRAIN - PRICE RECEIVED, MEASURED IN $ / BU",
+      "precio_usd_kg": 0.205,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "bajo"
+    },
+    "trigo": {
+      "gaez_codigo": "whe",
+      "razon_insumos": 4.81,
+      "puntos_validos": 4,
+      "maquinaria": "media",
+      "nass_serie": "WHEAT - PRICE RECEIVED, MEASURED IN $ / BU",
+      "precio_usd_kg": 0.253,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "bajo"
+    },
+    "arroz": {
+      "gaez_codigo": "rcw",
+      "razon_insumos": 4.56,
+      "puntos_validos": 6,
+      "maquinaria": "media",
+      "nass_serie": "RICE - PRICE RECEIVED, MEASURED IN $ / CWT",
+      "precio_usd_kg": 0.36,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "medio"
+    },
+    "sorgo": {
+      "gaez_codigo": "srg",
+      "razon_insumos": 10.06,
+      "puntos_validos": 3,
+      "maquinaria": "alta",
+      "nass_serie": "SORGHUM, GRAIN - PRICE RECEIVED, MEASURED IN $ / CWT",
+      "precio_usd_kg": 0.205,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "bajo"
+    },
+    "mijo": {
+      "gaez_codigo": "pml",
+      "razon_insumos": 3.48,
+      "puntos_validos": 1,
+      "maquinaria": "baja",
+      "nass_serie": "MILLET, PROSO - PRICE RECEIVED, MEASURED IN $ / BU",
+      "precio_usd_kg": 0.256,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "bajo"
+    },
+    "frijol": {
+      "gaez_codigo": "phb",
+      "razon_insumos": 12.12,
+      "puntos_validos": 7,
+      "maquinaria": "alta",
+      "nass_serie": "BEANS, DRY EDIBLE, (EXCL CHICKPEAS) - PRICE RECEIVED, MEASURED IN $ / CWT",
+      "precio_usd_kg": 0.856,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "alto"
+    },
+    "arveja": {
+      "gaez_codigo": "pea",
+      "razon_insumos": 10.45,
+      "puntos_validos": 1,
+      "maquinaria": "alta",
+      "nass_serie": "PEAS, DRY EDIBLE - PRICE RECEIVED, MEASURED IN $ / CWT",
+      "precio_usd_kg": 0.318,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "medio"
+    },
+    "soya": {
+      "gaez_codigo": "soy",
+      "razon_insumos": 8.74,
+      "puntos_validos": 6,
+      "maquinaria": "media",
+      "nass_serie": "SOYBEANS - PRICE RECEIVED, MEASURED IN $ / BU",
+      "precio_usd_kg": 0.455,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "medio"
+    },
+    "mani": {
+      "gaez_codigo": "grd",
+      "razon_insumos": 17.58,
+      "puntos_validos": 6,
+      "maquinaria": "alta",
+      "nass_serie": "PEANUTS - PRICE RECEIVED, MEASURED IN $ / LB",
+      "precio_usd_kg": 0.561,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "medio"
+    },
+    "caupi": {
+      "gaez_codigo": "cow",
+      "razon_insumos": 4.71,
+      "puntos_validos": 6,
+      "maquinaria": "media"
+    },
+    "guandul": {
+      "gaez_codigo": "pig",
+      "razon_insumos": 4.21,
+      "puntos_validos": 6,
+      "maquinaria": "baja"
+    },
+    "alfalfa": {
+      "gaez_codigo": "alf",
+      "razon_insumos": 3.09,
+      "puntos_validos": 10,
+      "maquinaria": "baja",
+      "nass_serie": "HAY, ALFALFA - PRICE RECEIVED, MEASURED IN $ / TON",
+      "precio_usd_kg": 0.234,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "bajo"
+    },
+    "papa": {
+      "gaez_codigo": "wpo",
+      "razon_insumos": 5.69,
+      "puntos_validos": 4,
+      "maquinaria": "media",
+      "nass_serie": "POTATOES - PRICE RECEIVED, MEASURED IN $ / CWT",
+      "precio_usd_kg": 0.255,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "bajo"
+    },
+    "yuca": {
+      "gaez_codigo": "csv",
+      "razon_insumos": 4.0,
+      "puntos_validos": 6,
+      "maquinaria": "baja"
+    },
+    "batata": {
+      "gaez_codigo": "spo",
+      "razon_insumos": 4.47,
+      "puntos_validos": 6,
+      "maquinaria": "baja",
+      "nass_serie": "SWEET POTATOES - PRICE RECEIVED, MEASURED IN $ / CWT",
+      "precio_usd_kg": 0.535,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "medio"
+    },
+    "girasol": {
+      "gaez_codigo": "sfl",
+      "razon_insumos": 20.0,
+      "puntos_validos": 5,
+      "maquinaria": "alta",
+      "nass_serie": "SUNFLOWER - PRICE RECEIVED, MEASURED IN $ / CWT",
+      "precio_usd_kg": 0.578,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "medio"
+    },
+    "colza": {
+      "gaez_codigo": "rsd",
+      "razon_insumos": 13.03,
+      "puntos_validos": 6,
+      "maquinaria": "alta",
+      "nass_serie": "CANOLA - PRICE RECEIVED, MEASURED IN $ / CWT",
+      "precio_usd_kg": 0.566,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "medio"
+    },
+    "algodon": {
+      "gaez_codigo": "cot",
+      "razon_insumos": 4.68,
+      "puntos_validos": 5,
+      "maquinaria": "media",
+      "nass_serie": "COTTON - PRICE RECEIVED, MEASURED IN $ / LB",
+      "precio_usd_kg": 1.724,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "alto"
+    },
+    "tomate": {
+      "gaez_codigo": "tom",
+      "razon_insumos": 4.83,
+      "puntos_validos": 5,
+      "maquinaria": "media",
+      "nass_serie": "TOMATOES, FRESH MARKET - PRICE RECEIVED, MEASURED IN $ / CWT",
+      "precio_usd_kg": 1.116,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "alto"
+    },
+    "cebolla": {
+      "gaez_codigo": "oni",
+      "razon_insumos": 4.53,
+      "puntos_validos": 7,
+      "maquinaria": "baja",
+      "nass_serie": "ONIONS, DRY - PRICE RECEIVED, MEASURED IN $ / CWT",
+      "precio_usd_kg": 0.517,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "medio"
+    },
+    "zanahoria": {
+      "gaez_codigo": "car",
+      "razon_insumos": 3.78,
+      "puntos_validos": 5,
+      "maquinaria": "baja",
+      "nass_serie": "CARROTS, FRESH MARKET - PRICE RECEIVED, MEASURED IN $ / CWT",
+      "precio_usd_kg": 1.511,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "alto"
+    },
+    "cebada": {
+      "gaez_codigo": "brl",
+      "razon_insumos": 20.0,
+      "puntos_validos": 4,
+      "maquinaria": "alta",
+      "nass_serie": "BARLEY - PRICE RECEIVED, MEASURED IN $ / BU",
+      "precio_usd_kg": 0.291,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "bajo"
+    },
+    "avena": {
+      "nass_serie": "OATS - PRICE RECEIVED, MEASURED IN $ / BU",
+      "precio_usd_kg": 0.275,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "bajo"
+    },
+    "centeno": {
+      "nass_serie": "RYE - PRICE RECEIVED, MEASURED IN $ / BU",
+      "precio_usd_kg": 0.244,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "bajo"
+    },
+    "garbanzo": {
+      "nass_serie": "CHICKPEAS - PRICE RECEIVED, MEASURED IN $ / CWT",
+      "precio_usd_kg": 0.716,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "alto"
+    },
+    "lenteja": {
+      "nass_serie": "LENTILS - PRICE RECEIVED, MEASURED IN $ / CWT",
+      "precio_usd_kg": 0.748,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "alto"
+    },
+    "cartamo": {
+      "nass_serie": "SAFFLOWER - PRICE RECEIVED, MEASURED IN $ / CWT",
+      "precio_usd_kg": 0.615,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "medio"
+    },
+    "linaza": {
+      "nass_serie": "FLAXSEED - PRICE RECEIVED, MEASURED IN $ / BU",
+      "precio_usd_kg": 0.642,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "alto"
+    },
+    "ahuyama": {
+      "nass_serie": "SQUASH - PRICE RECEIVED, MEASURED IN $ / CWT",
+      "precio_usd_kg": 0.782,
+      "precio_anios": "2021-2025",
+      "precio_nivel": "alto"
+    }
+  }
+}
